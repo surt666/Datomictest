@@ -107,9 +107,11 @@
 
 (def uri "datomic:free://localhost:4334/test")
 
-(d/create-database uri)
+(def uri-pro "datomic:ddb://datomic/test?aws_access_key_id=AKIAIWWUQM2X3I2Z3PIQ&aws_secret_key=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")
 
-(def conn (d/connect uri))
+(d/create-database uri-pro)
+
+(def conn (d/connect uri-pro))
 
 (defn create-schema []  
   @(d/transact conn schema))
@@ -147,12 +149,15 @@
            {:db/id #db/id[:abonnement] :abon/amsid (d/tempid :adresse -3) :abon/varenr (d/tempid :produkt -3) :abon/status :abon.status/aktiv :abon/oprettelsesdato (Date.)}
            {:db/id #db/id[:abonnement] :abon/amsidl 123456 :abon/varenrl 1101101 :abon/status :abon.status/aktiv :abon/oprettelsesdato (Date.)}
            {:db/id #db/id[:abonnement] :abon/amsidl 123457 :abon/varenrl 1101201 :abon/status :abon.status/aktiv :abon/oprettelsesdato (Date.)}
-           {:db/id #db/id[:abonnement] :abon/amsidl 123458 :abon/varenrl 1101001 :abon/status :abon.status/aktiv :abon/oprettelsesdato (Date.)}]))
+           {:db/id #db/id[:abonnement] :abon/amsidl 123458 :abon/varenrl 1101001 :abon/status :abon.status/aktiv :abon/oprettelsesdato (Date.)}
+           {:db/id (d/tempid :db.part/user) :seq 0}]))
 
 ;;(findq '[:find ?s ?p :where [?a :adresse/vejnavn "Birkegade"] [?a :adresse/amsid ?ams] [?s :abon/amsidl ?ams] [?s :abon/varenrl ?pid] [?pi :produkt/id ?pid] [?pi :produkt/navn ?p]]) uden refs
 
 ;;(findq '[:find ?s ?p :where [?a :adresse/vejnavn "Birkegade"] [?s :abon/amsid ?a] [?s :abon/varenr ?pid] [?pid :produkt/navn ?p]]) med refs
 
-;;(insert [[:inc 17592186045437 :seq]]) kald inc trans func
+;;(insert [[:inc 17592186045437 :seq]]) kald inc trans func:
+
+;;(decorate-results (findq '[:find ?s :where [?s :seq]]))
 
 
