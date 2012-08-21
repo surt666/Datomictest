@@ -87,7 +87,23 @@
               :db/valueType :db.type/string
               :db/noHistory true
               :db/cardinality :db.cardinality/one              
-              :db.install/_attribute :db.part/db}])
+              :db.install/_attribute :db.part/db}
+
+             {:db/id #db/id[:db.part/db]
+              :db/ident :seq
+              :db/unique :db.unique/identity
+              :db/valueType :db.type/long
+              :db/noHistory true
+              :db/cardinality :db.cardinality/one              
+              :db.install/_attribute :db.part/db}
+             
+             {:db/id #db/id [:db.part/db]
+              :db/ident :inc
+              :db/fn #db/fn {:lang "clojure"
+                             :params [db id attr]
+                             :code (let [e (d/entity db id)
+                                         current (attr e 0) ]
+                                     [[:db/add id attr (inc current)]])}}])
 
 (def uri "datomic:free://localhost:4334/test")
 
@@ -136,5 +152,7 @@
 ;;(findq '[:find ?s ?p :where [?a :adresse/vejnavn "Birkegade"] [?a :adresse/amsid ?ams] [?s :abon/amsidl ?ams] [?s :abon/varenrl ?pid] [?pi :produkt/id ?pid] [?pi :produkt/navn ?p]]) uden refs
 
 ;;(findq '[:find ?s ?p :where [?a :adresse/vejnavn "Birkegade"] [?s :abon/amsid ?a] [?s :abon/varenr ?pid] [?pid :produkt/navn ?p]]) med refs
+
+;;(insert [[:inc 17592186045437 :seq]]) kald inc trans func
 
 
