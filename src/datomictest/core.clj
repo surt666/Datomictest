@@ -107,11 +107,9 @@
 
 (def uri "datomic:free://localhost:4334/test")
 
-(def uri-pro "datomic:ddb://datomic/test?aws_access_key_id=AKIAIWWUQM2X3I2Z3PIQ&aws_secret_key=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")
+(d/create-database uri)
 
-(d/create-database uri-pro)
-
-(def conn (d/connect uri-pro))
+(def conn (d/connect uri))
 
 (defn create-schema []  
   @(d/transact conn schema))
