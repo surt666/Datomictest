@@ -105,7 +105,7 @@
                                          current (attr e 0) ]
                                      [[:db/add id attr (inc current)]])}}])
 
-(def uri "datomic:free://localhost:4334/test")
+(def uri "datomic:dev://localhost:4334/test")
 
 (d/create-database uri)
 
